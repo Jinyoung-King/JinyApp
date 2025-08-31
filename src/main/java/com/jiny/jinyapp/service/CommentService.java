@@ -25,6 +25,7 @@ public class CommentService {
                 .build();
         return commentRepository.save(comment);
     }
+
     public Comment addComment(Post post, Comment comment) {
         comment.setPost(post);
         return commentRepository.save(comment);
