@@ -1,0 +1,31 @@
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 수정</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<div class="form-container">
+    <form th:action="@{'/posts/' + ${post.id} + '/edit'}" method="post">
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title" th:value="${post.title}" required/>
+
+        <label for="content">내용</label>
+        <textarea id="content" name="content" rows="10" required
+                  th:text="${post.content}"></textarea>
+
+        <!-- 버튼을 flex로 감싸서 가로 정렬 -->
+        <div class="button-group">
+            <button type="submit" class="edit-button">수정</button>
+            <!-- 삭제는 별도 form으로 유지하면서 스타일만 정렬 -->
+            <form th:action="@{'/posts/' + ${post.id} + '/delete'}" method="post" class="inline-form">
+                <button type="submit" class="delete-button"
+                        onclick="return confirm('정말 삭제하시겠습니까?')">삭제
+                </button>
+            </form>
+
+            <!-- 취소 (링크) -->
+            <a th:href="@{'/posts/' + ${post.id}}" class="cancel-button">취소</a>
+        </div>
+    </form>
+
+</div>

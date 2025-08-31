@@ -1,0 +1,175 @@
+.form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: #fdfdfd;
+}
+
+.form-container input[type="text"],
+.form-container textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.form-container button {
+    padding: 10px 16px;
+    font-size: 1rem;
+    margin-right: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* 삭제 버튼은 고유 class 로 스타일링 */
+.form-container .delete-button {
+    background-color: #f44336;
+    color: white;
+}
+
+.edit-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.form-container button:hover {
+    opacity: 0.9;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.button-group form,
+.button-group button,
+.button-group a {
+    margin: 0;
+}
+
+.inline-form {
+    display: inline;
+}
+
+/* 공통 버튼 스타일 */
+.edit-button,
+.delete-button,
+.cancel-button {
+    padding: 10px 16px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+/* 각각 다른 색상 */
+.edit-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+}
+
+.cancel-button {
+    background-color: #9e9e9e;
+    color: white;
+}
+
+.submit-button {
+    background-color: #2196F3; /* 파란색 */
+    color: white;
+    padding: 10px 16px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+}
+
+.submit-button:hover {
+    opacity: 0.9;
+}
+
+/* style.css */
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.card ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.card li {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.card li:last-child {
+    border-bottom: none;
+}
+
+.card li a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.card li span {
+    color: #777;
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+}
+
+.stats-box {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.stat {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    flex: 1;
+}
+
+.stat strong {
+    display: block;
+    font-size: 1.5rem;
+    color: #333;
+}
+

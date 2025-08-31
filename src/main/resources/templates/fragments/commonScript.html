@@ -1,0 +1,20 @@
+<script th:fragment="sortScript">
+    <!-- 정렬 전용 스크립트 -->
+</script>
+
+<script th:fragment="modalScript">
+    <!-- 모달 제어 스크립트 -->
+</script>
+
+<!-- 마우스 오버 시 이모지 애니메이션 주기 -->
+<script>
+    document.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("mouseenter", () => {
+            btn.style.transform = "scale(1.05)";
+            btn.style.transition = "0.2s";
+        });
+        btn.addEventListener("mouseleave", () => {
+            btn.style.transform = "scale(1)";
+        });
+    });
+</script>

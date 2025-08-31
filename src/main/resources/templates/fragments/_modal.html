@@ -1,0 +1,13 @@
+<!-- templates/fragments/_modal.html -->
+<div th:fragment="confirmModal(modalId, title, message)">
+    <div th:id="${modalId}" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2 th:text="${title}">제목</h2>
+            <p th:text="${message}">메시지</p>
+            <div class="modal-buttons">
+                <button class="confirm-button" onclick="confirmModalAction()">확인</button>
+                <button class="cancel-button" onclick="closeModal()">취소</button>
+            </div>
+        </div>
+    </div>
+</div>

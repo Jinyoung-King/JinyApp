@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      lang="ko"
+      layout:decorate="~{layout/base}">
+
+<head>
+    <title>게시글 목록</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<!-- ✅ 여기를 base.html의 th:insert="~{::content}"와 연결 -->
+<div layout:fragment="content">
+    <br>
+    <h1>게시글 목록</h1>
+    <div class="d-flex justify-content-end">
+        <button type="button" onclick="location.href='/posts/new'" class="btn btn-primary" style="margin-right: 1rem;">
+            게시글 작성
+        </button>
+    </div>
+
+    <div th:replace="~{post/_sortForm :: sortForm(currentSort=${sort}, currentDirection=${direction})}"></div>
+    <div th:replace="~{post/_postTable :: postTable(${postPage})}"></div>
+    <div th:replace="~{post/_pagination :: pagination(postPage=${postPage}, currentSort=${sort}, currentDirection=${direction})}"></div>
+
+    <!-- 분리한 script fragment 포함 -->
+    <div th:replace="~{fragments/sortScript :: sortScript}"></div>
+
+    <!-- TEST -->
+    <!-- 모달 정의 -->
+    <div th:replace="~{fragments/_modal :: confirmModal('deleteModal', '삭제 확인', '정말 삭제하시겠습니까?')}"></div>
+
+    <!-- 스크립트 포함 -->
+    <div th:replace="~{fragments/modalScript :: modalScript}"></div>
+
+</div>
+</body>
+<!-- ✅ 여기에 개별 CSS 블록 -->
+<th:block th:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/post-list.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</th:block>
+</html>

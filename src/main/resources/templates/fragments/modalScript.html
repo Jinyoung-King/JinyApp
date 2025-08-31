@@ -1,0 +1,35 @@
+<!-- templates/fragments/modalScript.html -->
+<script th:fragment="modalScript">
+    let modalCallback = null;
+
+    function openModal(modalId, callback) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = "block";
+            modalCallback = callback;
+        }
+    }
+
+    function closeModal() {
+        const modals = document.querySelectorAll(".modal");
+        modals.forEach(modal => modal.style.display = "none");
+        modalCallback = null;
+    }
+
+    function confirmModalAction() {
+        if (typeof modalCallback === "function") {
+            modalCallback();
+        }
+        closeModal();
+    }
+
+    // 클릭 바깥 영역 닫기
+    window.addEventListener("click", (event) => {
+        const modals = document.querySelectorAll(".modal");
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    });
+</script>

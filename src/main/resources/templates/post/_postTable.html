@@ -1,0 +1,19 @@
+<!-- 게시글 테이블 Fragment -->
+<div th:fragment="postTable(postPage)">
+    <table>
+        <thead>
+        <tr>
+            <th>제목</th>
+            <th>작성일</th>
+            <th>조회수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post : ${postPage.content}">
+            <td><a th:href="@{|/posts/${post.id}|}" th:text="${post.title}">제목</a></td>
+            <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</td>
+            <td th:text="${post.viewCount}">0</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

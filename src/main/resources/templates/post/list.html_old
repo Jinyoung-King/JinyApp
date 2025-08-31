@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <title>게시글 목록</title>
+    <style>
+        .sort-form {
+            margin-bottom: 20px;
+        }
+
+        .sort-form select {
+            padding: 6px 10px;
+            border-radius: 5px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .sort-form button {
+            padding: 6px 10px;
+            border: none;
+            background-color: #f44336;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .sort-form button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+<h1>게시글 목록</h1>
+
+<!-- ✅ 게시글 작성 버튼 -->
+<a href="/posts/new">
+    <button type="button">게시글 작성</button>
+</a>
+
+<!-- ✅ 정렬 드롭다운 -->
+<form id="sortForm" class="sort-form" method="get" action="/posts">
+    <input type="hidden" name="page" th:value="${postPage.number}" />
+    <input type="hidden" name="size" th:value="${postPage.size}" />
+
+    <label for="sortBy">정렬:</label>
+    <select name="sortBy" id="sortBy">
+        <option value="createdAt" th:selected="${sortBy == 'createdAt'}">최신순</option>
+        <option value="viewCount" th:selected="${sortBy == 'viewCount'}">조회순</option>
+    </select>
+
+    <select name="direction" id="direction">
+        <option value="desc" th:selected="${direction == 'desc'}">내림차순</option>
+        <option value="asc" th:selected="${direction == 'asc'}">오름차순</option>
+    </select>
+
+    <button type="button" onclick="resetSort()">초기화</button>
+</form>
+
+<script>
+    const sortBy = document.getElementById("sortBy");
+    const direction = document.getElementById("direction");
+
+    sortBy.addEventListener("change", () => {
+        document.getElementById("sortForm").submit();
+    });
+
+    direction.addEventListener("change", () => {
+        document.getElementById("sortForm").submit();
+    });
+
+    function resetSort() {
+        sortBy.value = "createdAt";
+        direction.value = "desc";
+        document.getElementById("sortForm").submit();
+    }
+
+    document.getElementById("sortForm").addEventListener("submit", function () {
+        const loadingMsg = document.createElement("div");
+        loadingMsg.innerText = "로딩 중입니다...";
+        loadingMsg.style.color = "gray";
+        document.body.appendChild(loadingMsg);
+    });
+</script>
+
+<!-- ✅ 게시글 목록 -->
+<table>
+    <thead>
+    <tr>
+        <th>제목</th>
+        <th>작성일</th>
+        <th>조회수</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post : ${postPage.content}">
+        <td><a th:href="@{|/posts/${post.id}|}" th:text="${post.title}">제목</a></td>
+        <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</td>
+        <td th:text="${post.viewCount}">0</td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- ✅ 페이지 네비게이션 -->
+<div>
+    <span th:if="${postPage.hasPrevious()}">
+        <a th:href="@{|/posts?page=${postPage.number - 1}&size=${postPage.size}&sortBy=${sortBy}&direction=${direction}|}">이전</a>
+    </span>
+    <span>Page <span th:text="${postPage.number + 1}">1</span> / <span th:text="${postPage.totalPages}">1</span></span>
+    <span th:if="${postPage.hasNext()}">
+        <a th:href="@{|/posts?page=${postPage.number + 1}&size=${postPage.size}&sortBy=${sortBy}&direction=${direction}|}">다음</a>
+    </span>
+</div>
+
+</body>
+</html>

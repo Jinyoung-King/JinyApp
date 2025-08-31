@@ -1,0 +1,17 @@
+<!-- 정렬 폼 Fragment -->
+<div th:fragment="sortForm(currentSort, currentDirection)">
+    <form id="sortForm" method="get" action="/posts">
+        <label>
+            정렬
+            <select id="sort" name="sort">
+                <option th:value="'createdAt'" th:selected="${currentSort == 'createdAt'}">최신순</option>
+                <option th:value="'viewCount'" th:selected="${currentSort == 'viewCount'}">조회순</option>
+            </select>
+            <select id="direction" name="direction">
+                <option th:value="'desc'" th:selected="${currentDirection == 'desc'}">내림차순</option>
+                <option th:value="'asc'" th:selected="${currentDirection == 'asc'}">오름차순</option>
+            </select>
+        </label>
+        <button type="button" onclick="resetSort()">초기화</button>
+    </form>
+</div>

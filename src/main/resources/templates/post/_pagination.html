@@ -1,0 +1,14 @@
+<!-- 페이지 네비게이션 Fragment -->
+<div th:fragment="pagination(postPage, currentSort, currentDirection)">
+    <div>
+        <span th:if="${postPage.hasPrevious()}">
+            <a th:href="@{|/posts?page=${postPage.number - 1}&size=${postPage.size}&sortBy=${sortBy}&direction=${direction}|}">이전</a>
+        </span>
+        <span>
+            Page <span th:text="${postPage.number + 1}">1</span> / <span th:text="${postPage.totalPages}">1</span>
+        </span>
+        <span th:if="${postPage.hasNext()}">
+            <a th:href="@{|/posts?page=${postPage.number + 1}&size=${postPage.size}&sortBy=${sortBy}&direction=${direction}|}">다음</a>
+        </span>
+    </div>
+</div>

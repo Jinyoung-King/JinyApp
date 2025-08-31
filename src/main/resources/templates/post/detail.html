@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${post.title}">게시글</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- highlight.js (GitHub 테마) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <style>
+        .comment-form textarea {
+            width: 100%;
+            resize: vertical;
+        }
+
+        .comment-form button {
+            margin-top: 0.5rem;
+        }
+
+        .comments-section {
+            margin-top: 2rem;
+        }
+
+        .inline-form {
+            display: inline;
+        }
+    </style>
+</head>
+<body class="container my-4">
+
+<h1 th:text="${post.title}">제목</h1>
+
+<p class="text-muted">
+    작성일: <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span> |
+    수정일: <span th:text="${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}"></span> |
+    조회수: <span th:text="${post.viewCount}">0</span>
+</p>
+
+<hr>
+
+<!-- 게시글 내용 -->
+<pre><code th:text="${post.content}"></code></pre>
+
+<div th:if="${post.imagePath}">
+    <img th:src="@{${post.imagePath}}" alt="첨부 이미지" style="max-width: 400px;">
+</div>
+
+<!-- 액션 버튼 -->
+<div class="mt-4">
+    <a th:href="@{'/posts/' + ${post.id} + '/edit'}" class="btn btn-primary me-2">✏️ 수정</a>
+
+    <form th:action="@{'/posts/' + ${post.id} + '/delete'}" method="post" class="d-inline"
+          onsubmit="return confirm('정말 삭제하시겠습니까?');">
+        <button type="submit" class="btn btn-danger">🗑️ 삭제</button>
+    </form>
+
+    <a th:href="@{/posts}" class="btn btn-secondary ms-2">📜 목록</a>
+    <a href="javascript:history.back();" class="btn btn-light ms-2">🔙 뒤로가기</a>
+</div>
+
+<!-- 댓글 섹션 -->
+<div class="comments-section">
+    <h3>💬 댓글</h3>
+
+    <!-- 댓글 목록 -->
+    <ul class="list-group mb-4">
+        <li th:each="comment : ${comments}" class="list-group-item">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <strong th:text="${comment.guestNickname != null ? comment.guestNickname : '익명의 손님'}"></strong>:
+                    <p class="mb-1" th:text="${comment.content}">댓글 내용</p>
+                    <small class="text-muted" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">
+                        작성일
+                    </small>
+                </div>
+                <form th:action="@{'/posts/' + ${post.id} + '/comments/' + ${comment.id} + '/delete'}"
+                      method="post" class="ms-2"
+                      onsubmit="return confirm('댓글을 삭제하시겠습니까?')">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">삭제</button>
+                </form>
+            </div>
+        </li>
+    </ul>
+
+    <!-- 댓글 작성 폼 -->
+    <form th:action="@{'/posts/' + ${post.id} + '/comments'}" method="post" class="mb-5">
+        <div class="mb-2">
+            <!-- 비회원 닉네임 입력 -->
+            <div th:if="${session.loginUser == null}">
+                <input type="text" name="guestNickname" placeholder="닉네임 (비회원용)" required>
+            </div>
+            <textarea name="content" class="form-control" rows="2" placeholder="댓글을 입력하세요" required></textarea>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-success">댓글 작성</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

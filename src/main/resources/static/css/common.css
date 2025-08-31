@@ -1,0 +1,12 @@
+pre {
+    overflow-x: auto;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f6f8fa;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f9f9f9;
+    margin: 2rem;
+}

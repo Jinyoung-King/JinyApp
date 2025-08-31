@@ -1,0 +1,17 @@
+<!-- templates/fragments/header.html -->
+<header th:fragment="header">
+    <nav>
+
+        <!-- 여기에 메뉴, 로고, 링크 등 -->
+        <!-- 버튼들 -->
+        <div style="margin-top: 2rem;">
+            <a href="/" class="btn btn-light">🏠Home</a>
+            <a href="/posts" class="btn btn-primary">전체 게시판 보기</a>
+            <a href="/posts/new" class="btn btn-success" th:if="${session.loginUser != null}">✏️ 게시글 작성</a>
+            <a href="/users/login" class="btn btn-secondary" th:if="${session.loginUser == null}">로그인</a>
+            <a href="/users/register" class="btn btn-secondary" th:if="${session.loginUser == null}">회원가입</a>
+            <a href="/users/logout" class="btn btn-danger" th:if="${session.loginUser != null}">로그아웃</a>
+        </div>
+
+    </nav>
+</header>

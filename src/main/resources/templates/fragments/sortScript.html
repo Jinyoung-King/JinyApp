@@ -1,0 +1,19 @@
+<!-- sortScript.html -->
+<script th:fragment="sortScript">
+    const sort = document.getElementById("sort");
+    const direction = document.getElementById("direction");
+
+    sort?.addEventListener("change", () => {
+        document.getElementById("sortForm")?.submit();
+    });
+
+    direction?.addEventListener("change", () => {
+        document.getElementById("sortForm")?.submit();
+    });
+
+    function resetSort() {
+        document.getElementById("sort").value = "createdAt";
+        document.getElementById("direction").value = "desc";
+        document.getElementById("sortForm")?.submit();
+    }
+</script>
