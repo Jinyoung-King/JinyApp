@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'distribution'
 }
 
 group = 'com.jiny'
@@ -46,3 +47,34 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+distributions {
+    main {
+        contents {
+            // 실행 JAR을 app 디렉터리에 배치
+            from('build/libs') {
+                into 'app'
+                include '*.jar'
+            }
+            // 설정 파일을 config 디렉터리에 배치
+            from('src/main/resources/config') {
+                into 'config'
+            }
+            // 실행 스크립트를 bin 디렉터리에 배치
+            from('scripts') {
+                into 'bin'
+            }
+            // 빈 디렉터리 생성 (logs, data)
+            from('.') {
+                into 'logs'
+                includeEmptyDirs = true
+            }
+            from('.') {
+                into 'data'
+                includeEmptyDirs = true
+            }
+        }
+    }
+}
+
+
