@@ -48,6 +48,11 @@ public class Post {
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
 
+    // ✅ 작성자 연관관계 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User author;
+
     private boolean secret;  // true면 비밀글
     private String password;         // 비밀번호 (nullable)
 

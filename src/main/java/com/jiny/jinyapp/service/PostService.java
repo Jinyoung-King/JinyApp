@@ -57,24 +57,27 @@ public class PostService {
     }
 
     @Transactional
-    public void updatePost(Long id, String title, String content) {
+    public void updatePost(Long id, String title, String content, Long userId) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
-//        if (!post.getAuthor().equals(loginUserId)) {
-//            throw new IllegalStateException("게시글 작성자만 수정할 수 있습니다.");
-//        }
+
+        if (post.getAuthor() == null || !post.getAuthor().getId().equals(userId)) {
+            throw new IllegalStateException("게시글 작성자만 수정할 수 있습니다.");
+        }
+
         post.setTitle(title);
         post.setContent(content);
         post.setUpdatedAt(LocalDateTime.now());
     }
 
     @Transactional
-    public void deletePost(Long id) {
+    public void deletePost(Long id, Long userId) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
-//        if (!post.getAuthor().equals(loginUserId)) {
-//            throw new IllegalStateException("게시글 작성자만 삭제할 수 있습니다.");
-//        }
+
+        if (post.getAuthor() == null || !post.getAuthor().getId().equals(userId)) {
+            throw new IllegalStateException("게시글 작성자만 삭제할 수 있습니다.");
+        }
         postRepository.delete(post);
     }
 

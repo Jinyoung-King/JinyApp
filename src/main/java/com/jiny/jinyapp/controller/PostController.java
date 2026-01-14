@@ -2,6 +2,7 @@ package com.jiny.jinyapp.controller;
 
 import com.jiny.jinyapp.domain.Comment;
 import com.jiny.jinyapp.domain.Post;
+import com.jiny.jinyapp.domain.User;
 import com.jiny.jinyapp.service.CommentService;
 import com.jiny.jinyapp.service.PostService;
 import jakarta.servlet.http.HttpSession;
@@ -135,8 +136,15 @@ public class PostController {
     // 게시글 저장 (폼 방식)
     @PostMapping("/form")
     public String savePost(@ModelAttribute Post post, // title, content
-                           @RequestParam(required = false) MultipartFile image) throws IOException {
+                           @RequestParam(required = false) MultipartFile image,
+                           HttpSession session) throws IOException {
         log.debug("게시글을 저장합니다: {} | 파일: {}", post, image);
+
+        User loginUser = (com.jiny.jinyapp.domain.User) session.getAttribute("loginUser");
+        if (loginUser != null) {
+            post.setAuthor(loginUser);
+        }
+
         if (post.isSecret()) {
             post.setPassword(post.getPassword()); // 평문 저장
         }
@@ -146,13 +154,15 @@ public class PostController {
 
     // 수정 폼
     @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable Long id, Model model) {
+    public String editForm(@PathVariable Long id, Model model, HttpSession session) {
         Post post = postService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
 
-//        if (!post.getAuthor().equals(loginUserId)) {
-//            return "redirect:/posts/" + id + "?error=not_author";
-//        }
+        com.jiny.jinyapp.domain.User loginUser = (com.jiny.jinyapp.domain.User) session.getAttribute("loginUser");
+        if (loginUser == null || post.getAuthor() == null || !post.getAuthor().getId().equals(loginUser.getId())) {
+            return "redirect:/posts/" + id + "?error=unauthorized";
+        }
+
         model.addAttribute("post", post);
         return "post/edit";
     }
@@ -161,16 +171,27 @@ public class PostController {
     @PostMapping("/{id}/edit")
     public String updatePost(@PathVariable Long id,
                              @RequestParam String title,
-                             @RequestParam String content
+                             @RequestParam String content,
+                             HttpSession session
     ) {
-        postService.updatePost(id, title, content);
+        com.jiny.jinyapp.domain.User loginUser = (com.jiny.jinyapp.domain.User) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/users/login";
+        }
+
+        postService.updatePost(id, title, content, loginUser.getId());
         return "redirect:/posts/" + id;
     }
 
     // 삭제 처리
     @PostMapping("/{id}/delete")
-    public String deletePost(@PathVariable Long id) {
-        postService.deletePost(id);
+    public String deletePost(@PathVariable Long id, HttpSession session) {
+        com.jiny.jinyapp.domain.User loginUser = (com.jiny.jinyapp.domain.User) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/users/login";
+        }
+
+        postService.deletePost(id, loginUser.getId());
         return "redirect:/posts";
     }
 }
