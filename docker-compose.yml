@@ -1,0 +1,23 @@
+# JinyApp 실행을 위한 인프라 설정 (MySQL, Redis)
+# 실행 방법: docker-compose up -d
+# 중지 방법: docker-compose down
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: jinyapp-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234"
+      MYSQL_DATABASE: "jinyapp_db"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    container_name: jinyapp-redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  mysql_data:
